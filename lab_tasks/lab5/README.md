@@ -26,7 +26,6 @@ All commands run, outputs, and verification screenshots are included in the atta
 ## What’s included
 
 - `lab5.pdf` — Full step-by-step lab report with commands, outputs, and labeled screenshots. *(Primary evidence — please open this first.)*  
-- `workspace/` — Optional: any config files or manifests created during the lab (e.g., `k8s-sample.yaml`, `setup.sh`, etc.).
 
 ---
 
@@ -38,8 +37,7 @@ I hereby confirm that I personally executed all tasks in this lab on my Ubuntu S
 
 ## How to review
 
-1. Open `lab5.pdf` for a step-by-step narrative and embedded screenshots.  
+ Open `lab5.pdf` for a step-by-step narrative and embedded screenshots.  
 
-3. Any config/manifests created are available in `workspace/`.
 
 ---
