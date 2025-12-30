@@ -1,5 +1,6 @@
 # Assignment 2 - Multi-Tier Web Infrastructure with Terraform & Nginx
-
+## Name : Reena Qureshi(052)
+## Section : V-B
 ## Architecture Overview
 
 ```markdown
@@ -118,3 +119,4 @@ To avoid AWS costs, destroy the infrastructure when finished:
 ```bash
 terraform destroy -auto-approve
 ```
+
