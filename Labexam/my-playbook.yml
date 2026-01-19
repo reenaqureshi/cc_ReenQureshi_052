@@ -1,0 +1,74 @@
+---
+- name: Configure EC2 Web Server with Apache
+  hosts: ec2
+  become: true
+
+  tasks:
+    - name: Update system packages
+      yum:
+        name: '*'
+        state: latest
+        update_cache: yes
+
+    - name: Stop nginx if running
+      service:
+        name: nginx
+        state: stopped
+        enabled: no
+      ignore_errors: yes
+
+    - name: Uninstall nginx to free port 80
+      yum:
+        name: nginx
+        state: absent
+
+    - name: Install Apache HTTPD
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start and enable HTTPD
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Get IMDSv2 token
+      uri:
+        url: http://169.254.169.254/latest/api/token
+        method: PUT
+        headers:
+          X-aws-ec2-metadata-token-ttl-seconds: "21600"
+        return_content: yes
+      register: imds_token
+
+    - name: Get public IPv4 address
+      uri:
+        url: http://169.254.169.254/latest/meta-data/public-ipv4
+        method: GET
+        headers:
+          X-aws-ec2-metadata-token: "{{ imds_token.content }}"
+        return_content: yes
+      register: public_ipv4
+
+    - name: Get public hostname
+      uri:
+        url: http://169.254.169.254/latest/meta-data/public-hostname
+        method: GET
+        headers:
+          X-aws-ec2-metadata-token: "{{ imds_token.content }}"
+        return_content: yes
+      register: public_hostname
+
+    - name: Print public IP
+      debug:
+        msg: "Public IP: {{ public_ipv4.content }}"
+
+    - name: Print public hostname
+      debug:
+        msg: "Public Hostname: {{ public_hostname.content }}"
+
+    - name: Restart HTTPD service
+      service:
+        name: httpd
+        state: restarted
